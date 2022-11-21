@@ -1,0 +1,16 @@
+package com.cts.dataloader.repositories;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.cts.dataloader.entitities.PatientDetailsEntity;
+
+public interface PatientRepository extends JpaRepository<PatientDetailsEntity, Integer> {
+	
+	@Query("select p from PatientDetailsEntity p where p.patientName LIKE %?1%")
+	Optional<PatientDetailsEntity> getPatientDetailsByName(String upperCase);
+
+	
+}

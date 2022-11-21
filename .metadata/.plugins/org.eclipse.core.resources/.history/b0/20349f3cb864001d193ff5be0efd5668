@@ -1,0 +1,77 @@
+package com.cts.dataloader.services;
+
+import java.util.Date;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cts.dataloader.dtos.UserDTO;
+import com.cts.dataloader.dtos.UserLoginDTO;
+import com.cts.dataloader.entitities.RoleMasterEntity;
+import com.cts.dataloader.entitities.UserEntity;
+import com.cts.dataloader.exception.DataLoaderException;
+import com.cts.dataloader.repositories.RoleMasterRepository;
+import com.cts.dataloader.repositories.UserRepository;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+	@Autowired
+	UserRepository userRepository;
+
+	@Autowired
+	RoleMasterRepository roleMasterRepository;
+
+	@Override
+	public UserEntity registerUserService(UserDTO userDTO) throws DataLoaderException {
+
+		if (!userDTO.getUserName().isEmpty() && !userDTO.getPassword().isEmpty() && !userDTO.getRoleName().isEmpty()) {
+
+			Optional<UserEntity> optionalAuthor = userRepository.findByUserName(userDTO.getUserName());
+			Optional<RoleMasterEntity> optionalRoleMaster = roleMasterRepository
+					.findRoleByRoleName(userDTO.getRoleName().toUpperCase());
+			if (optionalAuthor.isEmpty()) {
+				if (!optionalRoleMaster.isEmpty()) {
+					UserEntity userEntity = new UserEntity();
+					userEntity.setUserName(userDTO.getUserName().toLowerCase());
+					userEntity.setPassword(userDTO.getPassword());
+					userEntity.setCreatedDate(new Date());
+					userEntity.setRoleMasterEntity(optionalRoleMaster.get());
+					userEntity.setUpdatedDate(new Date());
+					userEntity.setActive(true);
+
+					return userRepository.save(userEntity);
+				} else {
+					throw new DataLoaderException(
+							userDTO.getRoleName() + " :- Role not exist. Please provide proper role.");
+				}
+
+			} else {
+				throw new DataLoaderException(
+						"UserName already Exit. Please use the same for login or create new account. Thank You !!!");
+
+			}
+		} else {
+
+			throw new DataLoaderException("User Registration Failed. Please fill all the fileds. Thank You !!!");
+
+		}
+	}
+
+	@Override
+	public UserEntity userLogin(UserLoginDTO userEntity) throws DataLoaderException {
+		Optional<UserEntity> optionalUser = userRepository.findByUserName(userEntity.getUsername().toLowerCase());
+
+		if (!optionalUser.isEmpty()) {
+			if (optionalUser.get().getPassword().equals(userEntity.getPassword())) {
+				return optionalUser.get();
+			} else {
+				throw new DataLoaderException("Please enter the correct password.");
+			}
+		} else {
+			throw new DataLoaderException("User Not Registered. Please register User");
+		}
+	}
+
+}

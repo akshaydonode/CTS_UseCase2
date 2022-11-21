@@ -1,0 +1,54 @@
+package com.cts.dataloader.controllers;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cts.dataloader.dtos.ResponseDTO;
+import com.cts.dataloader.dtos.UserDTO;
+import com.cts.dataloader.entitities.UserEntity;
+import com.cts.dataloader.exception.DataLoaderException;
+import com.cts.dataloader.services.UserService;
+
+@RestController
+@RequestMapping("/user")
+public class UserController {
+
+	@Autowired
+	UserService userService;
+
+	@PostMapping("/signup")
+	public ResponseDTO registerAuthor(@Valid @RequestBody UserDTO userEntity) {
+		ResponseDTO responseDto = new ResponseDTO();
+
+		try {
+			UserEntity userEntity2 = userService.registerUserService(userEntity);
+			responseDto.setResult(userEntity2);
+			responseDto.setMessage("User Registered Successfully...");
+		} catch (DataLoaderException e) {
+			responseDto.setException(e.getMessage());
+		}
+
+		return responseDto;
+
+	}
+
+	@PostMapping("/login")
+	public ResponseDTO loginAuthor(@Valid @RequestBody UserEntity userEntity) {
+		ResponseDTO responseDto = new ResponseDTO();
+
+		try {
+			UserEntity userEntity2 = userService.userLogin(userEntity);
+			responseDto.setResult(userEntity2);
+			responseDto.setMessage("User Login successfully");
+		} catch (DataLoaderException e) {
+			responseDto.setException(e.getMessage());
+		}
+
+		return responseDto;
+	}
+}

@@ -1,0 +1,66 @@
+package com.cts.dataloader.services;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cts.dataloader.entitities.RoleMasterEntity;
+import com.cts.dataloader.entitities.UserEntity;
+import com.cts.dataloader.exception.DataLoaderException;
+import com.cts.dataloader.repositories.RoleMasterRepository;
+import com.cts.dataloader.repositories.UserRepository;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+	@Autowired
+	UserRepository userRepository;
+	
+	@Autowired
+	RoleMasterRepository roleMasterRepository;
+
+	@Override
+	public UserEntity registerUserService(UserEntity userEntity) throws DataLoaderException {
+
+		if (!userEntity.getUserName().isEmpty() && !userEntity.getPassword().isEmpty()) {
+
+			Optional<UserEntity> optionalAuthor = userRepository.findByUserName(userEntity.getUserName());
+			Optional<RoleMasterEntity> optionalRoleMaster = 
+			if (optionalAuthor.isEmpty()) {
+
+				UserEntity newUserEntity = new UserEntity();
+				newUserEntity.setUserName(userEntity.getUserName().toLowerCase());
+				newUserEntity.setPassword(userEntity.getPassword());
+
+				return userRepository.save(newUserEntity);
+
+			} else {
+				throw new DataLoaderException(
+						"UserName already Exit. Please use the same for login or create new account. Thank You !!!");
+
+			}
+		} else {
+
+			throw new DataLoaderException("User Registration Failed. Please fill all the fileds. Thank You !!!");
+
+		}
+	}
+
+	@Override
+	public UserEntity userLogin(UserEntity userEntity) throws DataLoaderException {
+		Optional<UserEntity> optionalUser = userRepository
+				.findByUserName(userEntity.getUserName().toLowerCase());
+
+		if (!optionalUser.isEmpty()) {
+			if (optionalUser.get().getPassword().equals(userEntity.getPassword())) {
+				return optionalUser.get();
+			} else {
+				throw new DataLoaderException("Please enter the correct password.");
+			}
+		} else {
+			throw new DataLoaderException("User Not Registered. Please register User");
+		}
+	}
+
+}

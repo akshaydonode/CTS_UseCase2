@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;CorsFilter.java&apos; to &apos;dataloader/src/main/java/com.cts.dataloader.cors&apos;&#x0D;&#x0A;- Original project: &apos;SmartHire&apos;&#x0D;&#x0A;- Destination element: &apos;dataloader/src/main/java/com.cts.dataloader.cors&apos;&#x0D;&#x0A;- Original element: &apos;com.etap.smarthire.cors.filter.CorsFilter.java&apos;" description="Copy compilation unit" destination="=dataloader/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.cts.dataloader.cors" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.etap.smarthire.cors.filter{CorsFilter.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1668490534220" units="1" version="1.0"/>
+</session>

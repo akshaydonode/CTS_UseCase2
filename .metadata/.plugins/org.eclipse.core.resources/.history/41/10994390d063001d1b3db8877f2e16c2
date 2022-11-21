@@ -1,0 +1,10 @@
+package com.cts.dataloader.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.cts.dataloader.entitities.PatientDetailsEntity;
+
+public interface PatientRepository extends JpaRepository<PatientDetailsEntity, Integer> {
+
+	
+}

@@ -1,0 +1,17 @@
+spring.datasource.testWhileIdle=true
+spring.datasource.validationQuery=SELECT 1
+spring.jpa.show-sql=false
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.hibernate.naming-strategy=org.hibernate.cfg.ImprovedNamingStrategy
+#jdbc:mysql://authdatabase.cwwwkwnegpyq.ap-northeast-1.rds.amazonaws.com:3306/digitalbook?enabledTLSProtocols=TLSv1.2
+
+spring.datasource.url=jdbc:postgresql://dataloaderdb.ccwpxyenxpsd.us-east-1.rds.amazonaws.com:5432/dataloader
+spring.datasource.username=postgres
+spring.datasource.password=12345678
+spring.datasource.driver=org.postgresql.Driver
+#spring.datasource.url=jdbc:postgresql://127.0.0.1:5432/dataloader
+#spring.datasource.username=postgres
+#spring.datasource.password=12345
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.properties.hibernate.default_schema=dataloaderdb

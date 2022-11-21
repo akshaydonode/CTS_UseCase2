@@ -1,0 +1,25 @@
+package com.cts.dataloader.services;
+
+import java.io.FileInputStream;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+//import org.apache.poi.xssf.usermodel.XSSFWorkbook;  
+
+@Service
+public class PatientServiceImpl implements PatientService {
+
+	@Override
+	public String patientData(MultipartFile excelFile) {
+		
+		//FileInputStream file = new FileInputStream(excelFile.getInputStream());
+//		
+//		XSSF wb = new XSSFWorkbook();
+//		xss
+		xssf
+		
+		return null;
+
+	}
+
+}

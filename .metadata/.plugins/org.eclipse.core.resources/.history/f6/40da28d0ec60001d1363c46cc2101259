@@ -1,0 +1,15 @@
+package com.cts.dataloader.services;
+
+import org.springframework.stereotype.Service;
+
+import com.cts.dataloader.entitities.UserEntity;
+import com.cts.dataloader.exception.DataLoaderException;
+
+
+public interface UserService {
+
+	UserEntity registerUserService(UserEntity userEntity) throws DataLoaderException;
+
+	UserEntity authorLogin(UserEntity userEntity) throws DataLoaderException;
+
+}
