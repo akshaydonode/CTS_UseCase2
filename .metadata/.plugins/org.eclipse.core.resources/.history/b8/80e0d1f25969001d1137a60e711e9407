@@ -1,0 +1,17 @@
+package com.cts.dataloader.services;
+
+import com.cts.dataloader.dtos.UserDTO;
+import com.cts.dataloader.dtos.UserLoginDTO;
+import com.cts.dataloader.entitities.UserEntity;
+import com.cts.dataloader.exception.DataLoaderException;
+
+
+public interface UserService {
+
+	UserEntity registerUserService(UserDTO userEntity) throws DataLoaderException;
+
+	UserEntity userLogin(UserLoginDTO userEntity) throws DataLoaderException;
+
+	UserEntity checkUsername(String username);
+
+}

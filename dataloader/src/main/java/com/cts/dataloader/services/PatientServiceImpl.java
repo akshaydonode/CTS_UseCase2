@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cts.dataloader.dtos.PatientDTO;
 import com.cts.dataloader.entitities.PatientDetailsEntity;
 import com.cts.dataloader.exception.DataLoaderException;
 import com.cts.dataloader.repositories.PatientRepository;
@@ -85,6 +87,8 @@ public class PatientServiceImpl implements PatientService {
 							// return cellVal1;
 						} else if (cellVal == 2) {
 							cellVal1 = cell.getStringCellValue();
+
+							//patientDetailsEntity.setDob(setDate(cell.getStringCellValue()));
 							try {
 								patientDetailsEntity
 										.setDob(new SimpleDateFormat("dd-MM-yyyy").parse(cell.getStringCellValue()));
@@ -142,6 +146,21 @@ public class PatientServiceImpl implements PatientService {
 
 	}
 
+	private Date setDate(String stringCellValue) {
+		try {
+			DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+			DateFormat formatTo = new SimpleDateFormat("MM-dd-YYYY");
+
+			Date date = (Date) formatter.parse(stringCellValue);
+			String finalDate = formatTo.format(date);
+			return new SimpleDateFormat("dd-MM-yyyy").parse(finalDate);
+		} catch (Exception e) {
+			System.out.println("Exception in method checkDOBFormat : " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	private void savePatientDataInDB(List<PatientDetailsEntity> patientDetailsEntities) {
 
 		for (PatientDetailsEntity patientDetailsEntity : patientDetailsEntities) {
@@ -171,16 +190,22 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	public PatientDetailsEntity updatePatientDetails(int patientId, PatientDetailsEntity patientDetailsEntity)
+	public PatientDetailsEntity updatePatientDetails(int patientId, PatientDTO patientDetailsEntity)
 			throws DataLoaderException {
+		System.out.println("patientDetailsEntity :"+patientDetailsEntity.toString());
 		Optional<PatientDetailsEntity> optionalPatientDetails = patientRepository.getPatientDetailsById(patientId);
 
 		if (optionalPatientDetails.isEmpty()) {
 			throw new DataLoaderException("Patient Not exist");
 		} else {
 			optionalPatientDetails.get().setAddress(patientDetailsEntity.getAddress());
-			optionalPatientDetails.get().setDob(patientDetailsEntity.getDob());
-			optionalPatientDetails.get().setEmailId(patientDetailsEntity.getEmailId());
+			try {
+				optionalPatientDetails.get().setDob(new SimpleDateFormat("dd-MM-yyyy").parse(patientDetailsEntity.getDob()));
+			} catch (ParseException e) {
+				System.out.println("issue in date parsing"+e);
+				e.printStackTrace();
+			}
+			optionalPatientDetails.get().setEmailId(patientDetailsEntity.getEmail());
 			optionalPatientDetails.get().setPatientName(patientDetailsEntity.getPatientName());
 			optionalPatientDetails.get().setPhoneNumber(patientDetailsEntity.getPhoneNumber());
 			optionalPatientDetails.get().setStatus(patientDetailsEntity.getStatus());
@@ -192,11 +217,22 @@ public class PatientServiceImpl implements PatientService {
 
 	@Override
 	public List<PatientDetailsEntity> getAllPatientData() throws DataLoaderException {
-		List<PatientDetailsEntity> patientDetailsEntities = patientRepository.findAll();
+		String str = "Inducted";
+		List<PatientDetailsEntity> patientDetailsEntities = patientRepository.getAllPatients(str);
 		if (patientDetailsEntities.isEmpty()) {
 			throw new DataLoaderException("Patient Not exist.please upload patient details");
 		} else {
 			return patientDetailsEntities;
+		}
+	}
+
+	@Override
+	public PatientDetailsEntity getPatientData(int patientId) throws DataLoaderException {
+		Optional<PatientDetailsEntity> patientDetailsOptional = patientRepository.findById(patientId);
+		if (patientDetailsOptional.isEmpty()) {
+			throw new DataLoaderException("Patient Not exist.please upload patient details");
+		} else {
+			return patientDetailsOptional.get();
 		}
 	}
 

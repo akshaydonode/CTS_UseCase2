@@ -12,4 +12,8 @@ public interface UserService {
 
 	UserEntity userLogin(UserLoginDTO userEntity) throws DataLoaderException;
 
+	UserEntity checkUsername(String username) throws DataLoaderException;
+
+	UserEntity updatePassword(UserLoginDTO userLoginDTO) throws DataLoaderException;
+
 }

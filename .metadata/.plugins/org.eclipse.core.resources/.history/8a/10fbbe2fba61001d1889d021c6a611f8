@@ -1,5 +1,0 @@
-package com.cts.dataloader.repositories;
-
-public interface RoleMasterRepository {
-
-}

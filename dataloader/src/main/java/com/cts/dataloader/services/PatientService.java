@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cts.dataloader.dtos.PatientDTO;
 import com.cts.dataloader.entitities.PatientDetailsEntity;
 import com.cts.dataloader.exception.DataLoaderException;
 
@@ -14,9 +15,11 @@ public interface PatientService {
 
 	List<PatientDetailsEntity> getPatientDetails(String patientName) throws DataLoaderException;
 
-	PatientDetailsEntity updatePatientDetails(int patientId, PatientDetailsEntity patientDetailsEntity) throws DataLoaderException;
+	PatientDetailsEntity updatePatientDetails(int patientId, PatientDTO patientDetailsEntity) throws DataLoaderException;
 
 	List<PatientDetailsEntity> getAllPatientData() throws DataLoaderException;
+
+	PatientDetailsEntity getPatientData(int patientId) throws DataLoaderException;
 	
 	
 

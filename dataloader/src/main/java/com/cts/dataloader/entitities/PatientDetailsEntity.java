@@ -42,11 +42,11 @@ public class PatientDetailsEntity {
 	@Column(name = "STATUS")
 	private String status;
 
-	public int getUserId() {
+	public int getPatientId() {
 		return patientId;
 	}
 
-	public void setUserId(int patientId) {
+	public void setPatientId(int patientId) {
 		this.patientId = patientId;
 	}
 
@@ -116,9 +116,10 @@ public class PatientDetailsEntity {
 
 	@Override
 	public String toString() {
-		return "PatientDetails [patientId=" + patientId + ", patientName=" + patientName + ", address=" + address + ", dob="
-				+ dob + ", emailId=" + emailId + ", phoneNumber=" + phoneNumber + ", drugId=" + drugId + ", drugName="
-				+ drugName + ", status=" + status + "]";
+		return "PatientDetailsEntity [patientId=" + patientId + ", patientName=" + patientName + ", address=" + address
+				+ ", dob=" + dob + ", emailId=" + emailId + ", phoneNumber=" + phoneNumber + ", drugId=" + drugId
+				+ ", drugName=" + drugName + ", status=" + status + "]";
 	}
 
+	
 }

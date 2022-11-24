@@ -1,0 +1,11 @@
+package com.cts.dataloader.controllers.copy;
+
+import org.mockito.InjectMocks;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+public class UserLoginTest {
+
+	@InjectMocks
+	UserController userController;
+}

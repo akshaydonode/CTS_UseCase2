@@ -2,6 +2,9 @@ package com.cts.dataloader.dtos;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ResponseDTO {
 
 	private List<Object> response;

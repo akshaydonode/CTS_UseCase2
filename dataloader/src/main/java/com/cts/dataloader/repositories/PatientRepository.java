@@ -16,4 +16,7 @@ public interface PatientRepository extends JpaRepository<PatientDetailsEntity, I
 	@Query("select p from PatientDetailsEntity p where p.patientId=?1")
 	Optional<PatientDetailsEntity> getPatientDetailsById(int patientId);
 
+	@Query("select p from PatientDetailsEntity p where p.status LIKE %?1%")
+	List<PatientDetailsEntity> getAllPatients(String str);
+
 }

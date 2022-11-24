@@ -3,7 +3,10 @@ package com.cts.dataloader.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,39 +25,74 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+	
+//	@Autowired
+//	ResponseDTO responseDTO;
+	
+	@GetMapping("/test")
+	public String testApplication() {
+		return "Dataloader is up and Running.";
+	}
 
 	//@PostMapping("/signup")
 	@RequestMapping(method = RequestMethod.POST,value = "/signup")
 	public ResponseDTO registerUser(@RequestBody UserDTO userDTO) {
 		System.out.println("inside signup controller "+userDTO.toString());
 
-		ResponseDTO responseDto = new ResponseDTO();
+		ResponseDTO responseDTO = new ResponseDTO();
 
 		try {
 			UserEntity userEntity2 = userService.registerUserService(userDTO);
-			responseDto.setResult(userEntity2);
-			responseDto.setMessage("User Registered Successfully...");
+			responseDTO.setResult(userEntity2);
+			responseDTO.setMessage("User Registered Successfully...");
 		} catch (DataLoaderException e) {
-			responseDto.setException(e.getMessage());
+			responseDTO.setException(e.getMessage());
 		}
 
-		return responseDto;
+		return responseDTO;
 
 	}
 
 	@PostMapping("/login")//deserialization
 	public ResponseDTO loginAuthor(@Valid @RequestBody UserLoginDTO userDTO) {
 		System.out.println("inside login controller "+userDTO.toString());
-		ResponseDTO responseDto = new ResponseDTO();
+		ResponseDTO responseDTO = new ResponseDTO();
 
 		try {
 			UserEntity userEntity2 = userService.userLogin(userDTO);
-			responseDto.setResult(userEntity2);
-			responseDto.setMessage("User Login successfully");
+			responseDTO.setResult(userEntity2);
+			responseDTO.setMessage("User Login successfully");
 		} catch (DataLoaderException e) {
-			responseDto.setException(e.getMessage());
+			responseDTO.setException(e.getMessage());
 		}
 
-		return responseDto;//serialization
+		return responseDTO;//serialization
+	}
+	
+	@GetMapping("/checkUsername/{username}")
+	public ResponseDTO checkUsername(@PathVariable String username) {
+		ResponseDTO responseDTO = new ResponseDTO();
+		try {
+			UserEntity userEntity2 = userService.checkUsername(username);
+			responseDTO.setResult(userEntity2);
+			responseDTO.setMessage("User found successfully");
+		} catch (DataLoaderException e) {
+			responseDTO.setException(e.getMessage());
+		}
+		return responseDTO;
+	}
+	
+	@PutMapping("/updatePassword")
+	public ResponseDTO updatePassword(@RequestBody UserLoginDTO userLoginDTO) {
+		ResponseDTO responseDTO = new ResponseDTO();
+
+		try {
+			UserEntity userEntity = userService.updatePassword(userLoginDTO);
+			responseDTO.setResult(userEntity);
+			responseDTO.setMessage("Password updated successfully");
+		} catch (DataLoaderException e) {
+			responseDTO.setException(e.getMessage());
+		}
+		return responseDTO;
 	}
 }
